@@ -3,9 +3,9 @@
 import { useContext, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { FaTrash, FaMinus, FaPlus, FaArrowLeft, FaShoppingCart } from "react-icons/fa"
-import { CartContext } from "../contexts/CartContext"
-import { AuthContext } from "../contexts/AuthContext"
-import { formatCurrency } from "../utils/format"
+import { CartContext } from "../contexts/CartContext.js"
+import { AuthContext } from "../contexts/AuthContext.js"
+import { formatCurrency } from "../utils/format.js"
 import "./CartPage.css"
 
 const CartPage = () => {

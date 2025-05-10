@@ -4,7 +4,7 @@
   
   /* Hero Section */
   .hero-section {
-    background-image: url("/images/hero-bg.jpg");
+    background-image: url("../assets/img/hero-bg.png");
     background-size: cover;
     background-position: center;
     height: 600px;
@@ -182,7 +182,7 @@
   /* Promotion Section */
   .promotion-section {
     padding: 4rem 0;
-    background-image: url("/images/promotion-bg.jpg");
+    background-image: url("../assets/img/promotion-bg.png");
     background-size: cover;
     background-position: center;
     position: relative;

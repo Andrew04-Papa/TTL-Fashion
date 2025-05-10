@@ -22,17 +22,22 @@ export const getProducts = async (req, res) => {
 // Lấy thông tin chi tiết sản phẩm
 export const getProductById = async (req, res) => {
   try {
-    const { id } = req.params
+    const { id } = req.params;
+    const productId = parseInt(id, 10);
 
-    const product = await productModel.getProductById(id)
-    if (!product) {
-      return res.status(404).json({ message: "Không tìm thấy sản phẩm" })
+    if (isNaN(productId)) {
+      return res.status(400).json({ message: "ID sản phẩm không hợp lệ." });
     }
 
-    res.status(200).json({ product })
+    const product = await productModel.getProductById(productId);
+    if (!product) {
+      return res.status(404).json({ message: "Không tìm thấy sản phẩm" });
+    }
+
+    res.status(200).json({ product });
   } catch (error) {
-    console.error("Lỗi lấy thông tin sản phẩm:", error)
-    res.status(500).json({ message: "Lỗi server" })
+    console.error("Lỗi lấy thông tin sản phẩm:", error);
+    res.status(500).json({ message: "Lỗi server" });
   }
 }
 
@@ -130,13 +135,15 @@ export const deleteProduct = async (req, res) => {
 // Lấy danh sách danh mục
 export const getCategories = async (req, res) => {
   try {
-    const categories = await productModel.getAllCategories()
-    res.status(200).json({ categories })
+    console.log("✅ Gọi getCategories");
+    const categories = await productModel.getAllCategories();
+    res.status(200).json({ categories });
   } catch (error) {
-    console.error("Lỗi lấy danh sách danh mục:", error)
-    res.status(500).json({ message: "Lỗi server" })
+    console.error("Lỗi lấy danh sách danh mục:", error);
+    res.status(500).json({ message: "Lỗi server" });
   }
-}
+};
+
 
 // Lấy thông tin chi tiết danh mục
 export const getCategoryById = async (req, res) => {

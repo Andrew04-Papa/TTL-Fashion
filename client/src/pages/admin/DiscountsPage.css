@@ -1,0 +1,62 @@
+.discounts-container {
+    padding: 60px 20px;
+    background: #f5f5f5;
+    min-height: 100vh;
+    font-family: 'Segoe UI', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: start;
+  }
+  
+  .discounts-box {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 1000px;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.08);
+  }
+  
+  .discounts-box h2 {
+    text-align: center;
+    margin-bottom: 24px;
+    color: #333;
+  }
+  
+  .discounts-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15px;
+  }
+  
+  .discounts-table th,
+  .discounts-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+  }
+  
+  .discounts-table th {
+    background-color: #f0f0f0;
+    color: #444;
+  }
+  
+  .discounts-table tr:hover {
+    background-color: #fdfdfd;
+  }
+  
+  .discounts-table button {
+    margin-right: 8px;
+    padding: 6px 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: #111;
+    color: white;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .discounts-table button:hover {
+    background-color: #333;
+  }
+  

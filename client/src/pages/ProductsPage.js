@@ -3,8 +3,8 @@
 import { useState, useEffect } from "react"
 import { useSearchParams } from "react-router-dom"
 import { FaFilter, FaTimes } from "react-icons/fa"
-import ProductCard from "../components/product/ProductCard"
-import api from "../utils/api"
+import ProductCard from "../components/product/ProductCard.js"
+import api from "../utils/api.js"
 import "./ProductsPage.css"
 
 const ProductsPage = () => {

@@ -2,8 +2,8 @@
 
 import { createContext, useState, useEffect, useContext } from "react"
 import { toast } from "react-toastify"
-import api from "../utils/api"
-import { AuthContext } from "./AuthContext"
+import api from "../utils/api.js"
+import { AuthContext } from "./AuthContext.js"
 
 export const CartContext = createContext()
 
@@ -160,12 +160,16 @@ export const CartProvider = ({ children }) => {
 
   // Tính tổng tiền giỏ hàng
   const calculateTotal = () => {
-    return cart.items.reduce((total, item) => total + item.price * item.quantity, 0)
+    return Array.isArray(cart?.items)
+      ? cart.items.reduce((total, item) => total + item.price * item.quantity, 0)
+      : 0
   }
 
   // Tính tổng số lượng sản phẩm trong giỏ hàng
   const calculateItemCount = () => {
-    return cart.items.reduce((count, item) => count + item.quantity, 0)
+    return Array.isArray(cart?.items)
+      ? cart.items.reduce((count, item) => count + item.quantity, 0)
+      : 0
   }
 
   const value = {

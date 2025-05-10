@@ -3,9 +3,9 @@
 import { useState, useEffect, useContext } from "react"
 import { useParams, Link } from "react-router-dom"
 import { FaShoppingCart, FaMinus, FaPlus, FaArrowLeft } from "react-icons/fa"
-import { CartContext } from "../contexts/CartContext"
-import { formatCurrency } from "../utils/format"
-import api from "../utils/api"
+import { CartContext } from "../contexts/CartContext.js"
+import { formatCurrency } from "../utils/format.js"
+import api from "../utils/api.js"
 import "./ProductDetailPage.css"
 
 const ProductDetailPage = () => {

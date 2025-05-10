@@ -1,0 +1,31 @@
+.success-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 20px;
+    background: #f0f0f0;
+    min-height: 100vh;
+    font-family: 'Segoe UI', sans-serif;
+  }
+  
+  .success-box {
+    background: #ffffff;
+    padding: 40px 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.08);
+    max-width: 500px;
+    text-align: center;
+  }
+  
+  .success-box h2 {
+    color: #2e7d32;
+    font-size: 24px;
+    margin-bottom: 16px;
+  }
+  
+  .success-box p {
+    color: #444;
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+  

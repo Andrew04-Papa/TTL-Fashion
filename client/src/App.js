@@ -1,39 +1,40 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import { ToastContainer } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
-import { AuthProvider } from "./contexts/AuthContext"
-import { CartProvider } from "./contexts/CartContext"
-import PrivateRoute from "./components/common/PrivateRoute"
-import AdminRoute from "./components/common/AdminRoute"
+import { AuthProvider } from "./contexts/AuthContext.js"
+import { CartProvider } from "./contexts/CartContext.js"
+import PrivateRoute from "./components/common/PrivateRoute.js"
+import AdminRoute from "./components/common/AdminRoute.js"
 
 // Layouts
-import MainLayout from "./layouts/MainLayout"
-import AdminLayout from "./layouts/AdminLayout"
+import MainLayout from "./layouts/MainLayout.js"
+import AdminLayout from "./layouts/AdminLayout.js"
 
-// Public Pages
-import HomePage from "./pages/HomePage"
-import ProductsPage from "./pages/ProductsPage"
-import ProductDetailPage from "./pages/ProductDetailPage"
-import LoginPage from "./pages/LoginPage"
-import RegisterPage from "./pages/RegisterPage"
-import CartPage from "./pages/CartPage"
-import CheckoutPage from "./pages/CheckoutPage"
-import OrderSuccessPage from "./pages/OrderSuccessPage"
-import AboutPage from "./pages/AboutPage"
-import ContactPage from "./pages/ContactPage"
+// Pages
+import HomePage from "./pages/HomePage.js"
+import ProductsPage from "./pages/ProductsPage.js"
+import ProductDetailPage from "./pages/ProductDetailPage.js"
+import LoginPage from "./pages/LoginPage.js"
+import RegisterPage from "./pages/RegisterPage.js"
+import CartPage from "./pages/CartPage.js"
+import CheckoutPage from "./pages/CheckoutPage.js"
+import OrderSuccessPage from "./pages/OrderSuccessPage.js"
+import AboutPage from "./pages/AboutPage.js"
+import ContactPage from "./pages/ContactPage.js"
+
 
 // User Pages
-import ProfilePage from "./pages/user/ProfilePage"
-import OrdersPage from "./pages/user/OrdersPage"
-import OrderDetailPage from "./pages/user/OrderDetailPage"
+import ProfilePage from "./pages/user/ProfilePage.js"
+import OrdersPage from "./pages/user/OrdersPage.js"
+import OrderDetailPage from "./pages/user/OrderDetailPage.js"
 
 // Admin Pages
-import AdminDashboard from "./pages/admin/DashboardPage"
-import AdminProducts from "./pages/admin/ProductsPage"
-import AdminCategories from "./pages/admin/CategoriesPage"
-import AdminOrders from "./pages/admin/OrdersPage"
-import AdminUsers from "./pages/admin/UsersPage"
-import AdminDiscounts from "./pages/admin/DiscountsPage"
+import AdminDashboard from "./pages/admin/DashboardPage.js"
+import AdminProducts from "./pages/admin/ProductsPage.js"
+import AdminCategories from "./pages/admin/CategoriesPage.js"
+import AdminOrders from "./pages/admin/OrdersPage.js"
+import AdminUsers from "./pages/admin/UsersPage.js"
+import AdminDiscounts from "./pages/admin/DiscountsPage.js"
 
 function App() {
   return (

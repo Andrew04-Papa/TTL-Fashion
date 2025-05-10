@@ -1,0 +1,31 @@
+.checkout-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 20px;
+    background: #f8f8f8;
+    min-height: 100vh;
+    font-family: 'Segoe UI', sans-serif;
+  }
+  
+  .checkout-box {
+    background: #fff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.08);
+    width: 600px;
+    max-width: 100%;
+  }
+  
+  .checkout-box h2 {
+    text-align: center;
+    margin-bottom: 24px;
+    color: #333;
+  }
+  
+  .checkout-box p {
+    font-size: 16px;
+    color: #555;
+    text-align: center;
+  }
+  

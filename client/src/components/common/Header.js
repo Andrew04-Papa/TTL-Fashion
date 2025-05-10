@@ -3,8 +3,8 @@
 import { useContext, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { FaShoppingCart, FaUser, FaSearch, FaBars, FaTimes } from "react-icons/fa"
-import { AuthContext } from "../../contexts/AuthContext"
-import { CartContext } from "../../contexts/CartContext"
+import { AuthContext } from "../../contexts/AuthContext.js"
+import { CartContext } from "../../contexts/CartContext.js"
 import "./Header.css"
 
 const Header = () => {

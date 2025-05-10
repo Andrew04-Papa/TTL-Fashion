@@ -3,8 +3,8 @@
 import { useContext } from "react"
 import { Link } from "react-router-dom"
 import { FaShoppingCart, FaEye } from "react-icons/fa"
-import { CartContext } from "../../contexts/CartContext"
-import { formatCurrency } from "../../utils/format"
+import { CartContext } from "../../contexts/CartContext.js"
+import { formatCurrency } from "../../utils/format.js"
 import "./ProductCard.css"
 
 const ProductCard = ({ product }) => {

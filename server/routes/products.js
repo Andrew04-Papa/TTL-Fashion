@@ -7,11 +7,13 @@ const router = express.Router()
 // Route công khai
 router.get("/", productController.getProducts)
 router.get("/search", productController.searchProducts)
-router.get("/:id", productController.getProductById)
 
-// Route danh mục
+// ✅ Đặt route cụ thể trước
 router.get("/categories", productController.getCategories)
 router.get("/categories/:id", productController.getCategoryById)
+
+// ❗ Đặt route động sau cùng (và bỏ trùng)
+router.get("/:id", productController.getProductById)
 
 // Route yêu cầu quyền admin
 router.post("/", authenticate, isAdmin, productController.createProduct)

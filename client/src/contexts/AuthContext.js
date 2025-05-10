@@ -2,7 +2,7 @@
 
 import { createContext, useState, useEffect } from "react"
 import { toast } from "react-toastify"
-import api from "../utils/api"
+import api from "../utils/api.js"
 
 export const AuthContext = createContext()
 
