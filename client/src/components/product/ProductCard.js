@@ -34,7 +34,7 @@ const ProductCard = ({ product }) => {
         <h3 className="product-name">
           <Link to={`/products/${product.id}`}>{product.name}</Link>
         </h3>
-        <p className="product-category">{product.category_name}</p>
+        {/* <p className="product-category">{product.category_name}</p> */}
         <p className="product-price">{formatCurrency(product.price)}</p>
       </div>
     </div>

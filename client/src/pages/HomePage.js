@@ -18,33 +18,19 @@ const HomePage = () => {
       try {
         setLoading(true)
 
+        // Lấy danh sách sản phẩm nổi bật (giả định là 4 sản phẩm đầu tiên)
         const featuredResponse = await api.get("/products?limit=4")
-        setFeaturedProducts(featuredResponse?.data?.products || [])
+        setFeaturedProducts(featuredResponse.data.products)
 
+        // Lấy danh sách sản phẩm mới nhất
         const newProductsResponse = await api.get("/products?limit=8")
-        setNewProducts(newProductsResponse?.data?.products || [])
+        setNewProducts(newProductsResponse.data.products)
 
+        // Lấy danh sách danh mục
         const categoriesResponse = await api.get("/products/categories")
-        setCategories(categoriesResponse?.data?.categories || [])
+        setCategories(categoriesResponse.data.categories)
       } catch (error) {
-        console.error("Error fetching data from API:", error)
-
-        setFeaturedProducts([
-          { id: 1, name: "Áo thun nữ", price: 250000, category_name: "Nữ", image_url: "/images/category-1.jpg" },
-          { id: 2, name: "Áo sơ mi nam", price: 320000, category_name: "Nam", image_url: "/images/category-2.jpg" }
-        ])
-
-        setNewProducts([
-          { id: 3, name: "Túi đeo chéo", price: 150000, category_name: "Phụ kiện", image_url: "/images/category-3.jpg" },
-          { id: 4, name: "Giày sneaker", price: 450000, category_name: "Giày dép", image_url: "/images/category-4.jpg" }
-        ])
-
-        setCategories([
-          { id: 1, name: "Thời trang nữ" },
-          { id: 2, name: "Thời trang nam" },
-          { id: 3, name: "Phụ kiện" },
-          { id: 4, name: "Giày dép" }
-        ])
+        console.error("Error fetching data:", error)
       } finally {
         setLoading(false)
       }
@@ -84,8 +70,8 @@ const HomePage = () => {
                     src={`/images/category-${category.id}.jpg`}
                     alt={category.name}
                     onError={(e) => {
-                      e.target.onerror = null
-                      e.target.src = "/images/default-category.png"
+                      e.target.onerror = null;
+                      e.target.src = "/images/default-category.png";
                     }}
                   />
                 </div>
