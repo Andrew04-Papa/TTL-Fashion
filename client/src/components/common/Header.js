@@ -70,18 +70,15 @@ const Header = () => {
           </nav>
 
           <div className={`header-actions ${isMenuOpen ? "active" : ""}`}>
-            <div className="search-bar">
+            <form className="search-bar" onSubmit={handleSearch}>
               <input
                 type="text"
                 placeholder="Tìm kiếm sản phẩm..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") handleSearch(e)
-                }}
               />
               <FaSearch className="search-icon-inside" />
-            </div>
+            </form>
 
             <div className="cart-icon cart-centered">
               <Link to="/cart">

@@ -63,15 +63,55 @@ export const deleteProduct = async (id) => {
 }
 
 export const searchProducts = async (searchTerm) => {
-  const result = await query(
-    `SELECT p.*, c.name as category_name 
-     FROM products p
-     LEFT JOIN categories c ON p.category_id = c.id
-     WHERE p.name ILIKE $1 OR p.description ILIKE $1`,
-    [`%${searchTerm}%`],
-  )
+  try {
+    // Kiểm tra xem extension unaccent có sẵn không
+    const checkExtension = await query("SELECT 1 FROM pg_extension WHERE extname = 'unaccent'")
 
-  return result.rows
+    let sql
+
+    if (checkExtension.rows.length > 0) {
+      // Sử dụng unaccent nếu có sẵn
+      sql = `
+        SELECT p.*, c.name as category_name 
+        FROM products p
+        LEFT JOIN categories c ON p.category_id = c.id
+        WHERE 
+          unaccent(p.name) ILIKE unaccent($1) 
+          OR unaccent(p.description) ILIKE unaccent($1)
+          OR unaccent(c.name) ILIKE unaccent($1)
+      `
+    } else {
+      // Không sử dụng unaccent nếu không có sẵn
+      sql = `
+        SELECT p.*, c.name as category_name 
+        FROM products p
+        LEFT JOIN categories c ON p.category_id = c.id
+        WHERE 
+          p.name ILIKE $1 
+          OR p.description ILIKE $1
+          OR c.name ILIKE $1
+      `
+    }
+
+    const result = await query(sql, [`%${searchTerm}%`])
+    return result.rows
+  } catch (error) {
+    console.error("Lỗi tìm kiếm sản phẩm:", error)
+
+    // Fallback nếu có lỗi với unaccent
+    const result = await query(
+      `SELECT p.*, c.name as category_name 
+       FROM products p
+       LEFT JOIN categories c ON p.category_id = c.id
+       WHERE 
+         p.name ILIKE $1 
+         OR p.description ILIKE $1
+         OR c.name ILIKE $1`,
+      [`%${searchTerm}%`],
+    )
+
+    return result.rows
+  }
 }
 
 export const getAllCategories = async () => {

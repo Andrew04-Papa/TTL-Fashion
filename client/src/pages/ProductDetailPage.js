@@ -2,10 +2,11 @@
 
 import { useState, useEffect, useContext } from "react"
 import { useParams, Link } from "react-router-dom"
-import { FaShoppingCart, FaMinus, FaPlus, FaArrowLeft } from "react-icons/fa"
+import { FaShoppingCart, FaMinus, FaPlus, FaArrowLeft, FaStar, FaStarHalfAlt, FaRegStar, FaCheck } from "react-icons/fa"
 import { CartContext } from "../contexts/CartContext.js"
 import { formatCurrency } from "../utils/format.js"
 import api from "../utils/api.js"
+import ProductCard from "../components/product/ProductCard.js"
 import "./ProductDetailPage.css"
 
 const ProductDetailPage = () => {
@@ -15,6 +16,16 @@ const ProductDetailPage = () => {
   const [relatedProducts, setRelatedProducts] = useState([])
   const [quantity, setQuantity] = useState(1)
   const [loading, setLoading] = useState(true)
+  const [activeImage, setActiveImage] = useState(0)
+  const [isAddingToCart, setIsAddingToCart] = useState(false)
+
+  // Tạo mảng hình ảnh cho demo (trong thực tế sẽ lấy từ dữ liệu sản phẩm)
+  const [productImages, setProductImages] = useState([
+    { id: 0, url: "" }, // Sẽ được thay thế bằng hình ảnh chính của sản phẩm
+    { id: 1, url: "/images/product-placeholder.jpg" },
+    { id: 2, url: "/images/product-placeholder.jpg" },
+    { id: 3, url: "/images/product-placeholder.jpg" },
+  ])
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -24,6 +35,11 @@ const ProductDetailPage = () => {
         // Lấy thông tin sản phẩm
         const response = await api.get(`/products/${id}`)
         setProduct(response.data.product)
+
+        // Cập nhật hình ảnh đầu tiên với hình ảnh sản phẩm
+        const updatedImages = [...productImages]
+        updatedImages[0].url = response.data.product.image_url || "/images/product-placeholder.jpg"
+        setProductImages(updatedImages)
 
         // Lấy sản phẩm liên quan (cùng danh mục)
         if (response.data.product.category_id) {
@@ -42,6 +58,7 @@ const ProductDetailPage = () => {
     fetchProduct()
     // Reset quantity khi chuyển sang sản phẩm khác
     setQuantity(1)
+    setActiveImage(0)
   }, [id])
 
   const handleQuantityChange = (e) => {
@@ -64,11 +81,47 @@ const ProductDetailPage = () => {
   }
 
   const handleAddToCart = () => {
+    setIsAddingToCart(true)
     addToCart(product.id, quantity)
+
+    // Hiển thị hiệu ứng thêm thành công
+    setTimeout(() => {
+      setIsAddingToCart(false)
+    }, 1000)
   }
 
+  // Hàm render sao đánh giá
+  const renderStars = (rating) => {
+    const stars = []
+    const fullStars = Math.floor(rating)
+    const hasHalfStar = rating % 1 >= 0.5
+
+    for (let i = 0; i < 5; i++) {
+      if (i < fullStars) {
+        stars.push(<FaStar key={i} />)
+      } else if (i === fullStars && hasHalfStar) {
+        stars.push(<FaStarHalfAlt key={i} />)
+      } else {
+        stars.push(<FaRegStar key={i} />)
+      }
+    }
+
+    return stars
+  }
+
+  // Tạo rating ngẫu nhiên cho demo
+  const rating = product?.rating || 0
+  const reviewCount = product?.review_count || 0
+
   if (loading) {
-    return <div className="loading">Đang tải...</div>
+    return (
+      <div className="container">
+        <div className="loading">
+          <div className="spinner"></div>
+          <p>Đang tải thông tin sản phẩm...</p>
+        </div>
+      </div>
+    )
   }
 
   if (!product) {
@@ -88,27 +141,88 @@ const ProductDetailPage = () => {
     <div className="product-detail-page">
       <div className="container">
         <div className="breadcrumb">
-          <Link to="/">Trang chủ</Link> /<Link to="/products">Sản phẩm</Link> /<span>{product.name}</span>
+          <Link to="/">Trang chủ</Link>
+          <span className="breadcrumb-separator">/</span>
+          <Link to="/products">Sản phẩm</Link>
+          <span className="breadcrumb-separator">/</span>
+          {product.category_name && (
+            <>
+              <Link to={`/products?category=${product.category_id}`}>{product.category_name}</Link>
+              <span className="breadcrumb-separator">/</span>
+            </>
+          )}
+          <span>{product.name}</span>
         </div>
 
         <div className="product-detail">
-          <div className="product-image">
-            <img src={product.image_url || "/images/product-placeholder.jpg"} alt={product.name} />
+          <div className="product-gallery">
+            <div className="product-main-image">
+              <img src={productImages[activeImage].url || "/images/product-placeholder.jpg"} alt={product.name} />
+            </div>
+
+            <div className="product-thumbnails">
+              {productImages.map((image, index) => (
+                <div
+                  key={image.id}
+                  className={`product-thumbnail ${activeImage === index ? "active" : ""}`}
+                  onClick={() => setActiveImage(index)}
+                >
+                  <img
+                    src={image.url || "/images/product-placeholder.jpg"}
+                    alt={`${product.name} - Ảnh ${index + 1}`}
+                  />
+                </div>
+              ))}
+            </div>
           </div>
 
           <div className="product-info">
-            <h1 className="product-name">{product.name}</h1>
+            <div className="product-header">
+              {product.category_name && <div className="product-category">{product.category_name}</div>}
+              <h1 className="product-name">{product.name}</h1>
 
-            <div className="product-meta">
-              <span className="product-category">Danh mục: {product.category_name}</span>
-              <span className="product-stock">Tình trạng: {product.stock_quantity > 0 ? "Còn hàng" : "Hết hàng"}</span>
+              <div className="product-rating">
+                <div className="stars">{renderStars(rating)}</div>
+                <span className="count">{reviewCount} đánh giá</span>
+              </div>
+
+              <div className="product-price">
+                {product.original_price && (
+                  <span className="original-price">{formatCurrency(product.original_price)}</span>
+                )}
+                {formatCurrency(product.price)}
+                {product.original_price && (
+                  <span className="discount">-{Math.round((1 - product.price / product.original_price) * 100)}%</span>
+                )}
+              </div>
             </div>
 
-            <div className="product-price">{formatCurrency(product.price)}</div>
+            <div className="product-meta">
+              <div className="meta-item">
+                <span className="label">SKU:</span>
+                <span className="value">TTL-{product.id.toString().padStart(4, "0")}</span>
+              </div>
+              {product.category_name && (
+                <div className="meta-item">
+                  <span className="label">Danh mục:</span>
+                  <span className="value">{product.category_name}</span>
+                </div>
+              )}
+            </div>
 
             <div className="product-description">
               <h3>Mô tả sản phẩm</h3>
               <p>{product.description || "Không có mô tả cho sản phẩm này."}</p>
+            </div>
+
+            <div className={`product-stock ${product.stock_quantity > 0 ? "in-stock" : "out-of-stock"}`}>
+              {product.stock_quantity > 0 ? (
+                <>
+                  <FaCheck /> Còn hàng ({product.stock_quantity} sản phẩm)
+                </>
+              ) : (
+                <>Hết hàng</>
+              )}
             </div>
 
             {product.stock_quantity > 0 ? (
@@ -132,9 +246,9 @@ const ProductDetailPage = () => {
                   </div>
                 </div>
 
-                <button className="btn-add-to-cart" onClick={handleAddToCart}>
+                <button className="btn-add-to-cart" onClick={handleAddToCart} disabled={isAddingToCart}>
                   <FaShoppingCart />
-                  Thêm vào giỏ hàng
+                  {isAddingToCart ? "Đã thêm vào giỏ hàng" : "Thêm vào giỏ hàng"}
                 </button>
               </>
             ) : (
@@ -150,20 +264,7 @@ const ProductDetailPage = () => {
             <h2>Sản phẩm liên quan</h2>
             <div className="related-products-grid">
               {relatedProducts.map((relatedProduct) => (
-                <div className="related-product-card" key={relatedProduct.id}>
-                  <Link to={`/products/${relatedProduct.id}`}>
-                    <div className="related-product-image">
-                      <img
-                        src={relatedProduct.image_url || "/images/product-placeholder.jpg"}
-                        alt={relatedProduct.name}
-                      />
-                    </div>
-                    <div className="related-product-info">
-                      <h3>{relatedProduct.name}</h3>
-                      <p className="related-product-price">{formatCurrency(relatedProduct.price)}</p>
-                    </div>
-                  </Link>
-                </div>
+                <ProductCard key={relatedProduct.id} product={relatedProduct} />
               ))}
             </div>
           </div>

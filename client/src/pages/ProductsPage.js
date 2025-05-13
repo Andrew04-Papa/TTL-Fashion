@@ -30,19 +30,23 @@ const ProductsPage = () => {
         const categoriesResponse = await api.get("/products/categories")
         setCategories(categoriesResponse.data.categories)
 
-        // Xây dựng query params
-        let url = "/products?limit=100"
+        let productsResponse
 
-        if (filters.category) {
-          url += `&category=${filters.category}`
-        }
-
+        // Nếu có từ khóa tìm kiếm, sử dụng endpoint search
         if (filters.search) {
-          url += `&search=${filters.search}`
+          productsResponse = await api.get(`/products/search?q=${filters.search}`)
+        } else {
+          // Xây dựng query params cho trường hợp không tìm kiếm
+          let url = "/products?limit=100"
+
+          if (filters.category) {
+            url += `&category=${filters.category}`
+          }
+
+          // Lấy danh sách sản phẩm
+          productsResponse = await api.get(url)
         }
 
-        // Lấy danh sách sản phẩm
-        const productsResponse = await api.get(url)
         let filteredProducts = productsResponse.data.products
 
         // Lọc theo giá
