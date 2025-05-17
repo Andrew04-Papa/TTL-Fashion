@@ -85,6 +85,7 @@ const ProfilePage = () => {
       }
 
       setAvatarFile(file)
+      setAvatarPreview(URL.createObjectURL(file));
     }
   }
 
@@ -152,6 +153,7 @@ const handleProfileSubmit = async (e) => {
         const uploadResponse = await api.post("/users/upload-avatar", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         })
         console.log("Upload response:", uploadResponse.data)
@@ -238,11 +240,19 @@ const handleProfileSubmit = async (e) => {
           <div className="profile-sidebar">
             <div className="profile-avatar-container">
               <div className="profile-avatar">
-                {avatarPreview ? (
-                  <img src={avatarPreview ? encodeURI(`${avatarPreview}?v=${Date.now()}`) : ""} alt={currentUser.full_name} />
-                ) : (
-                  <FaUser className="default-avatar" />
-                )}
+                {avatarPreview || currentUser.avatar_url ? (
+                <img
+                  src={
+                    avatarPreview
+                      ? avatarPreview
+                      : `http://localhost:5000${encodeURI(currentUser.avatar_url)}`
+                  }
+                  alt={currentUser.full_name}
+                  className="rounded-full w-28 h-28 object-cover border-2 border-white shadow-md"
+                />
+              ) : (
+                <FaUser className="default-avatar" />
+              )}
                 <label className="avatar-upload-label" htmlFor="avatar-upload">
                   <FaCamera />
                   <span>Thay đổi</span>

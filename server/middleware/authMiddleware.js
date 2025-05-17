@@ -26,7 +26,9 @@ export const authenticate = async (req, res, next) => {
       id: user.id,
       email: user.email,
       role: user.role || "customer",
+      avatar_url: user.avatar_url || null,
     }
+
 
     next()
   } catch (error) {

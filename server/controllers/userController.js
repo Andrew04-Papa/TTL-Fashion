@@ -193,6 +193,7 @@ export const uploadAvatar = async (req, res) => {
       if (!updatedUser) {
         return res.status(404).json({ message: "Không tìm thấy người dùng" })
       }
+      req.user.avatar_url = avatarUrl
     } catch (dbError) {
       console.error("Error updating avatar URL in database:", dbError)
       return res
