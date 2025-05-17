@@ -4,6 +4,7 @@ import dotenv from "dotenv"
 import morgan from "morgan"
 import path from "path"
 import { fileURLToPath } from "url"
+import fs from "fs"
 
 // Import routes
 import userRoutes from "./routes/users.js"
@@ -28,7 +29,24 @@ app.use(morgan("dev"))
 // Đường dẫn tĩnh cho uploads
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
+
+// Đảm bảo thư mục uploads tồn tại
+const uploadsDir = path.join(__dirname, "uploads")
+const avatarsDir = path.join(uploadsDir, "avatars")
+
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true })
+  console.log(`Created directory: ${uploadsDir}`)
+}
+
+if (!fs.existsSync(avatarsDir)) {
+  fs.mkdirSync(avatarsDir, { recursive: true })
+  console.log(`Created directory: ${avatarsDir}`)
+}
+
+// Cấu hình static middleware
 app.use("/uploads", express.static(path.join(__dirname, "uploads")))
+console.log(`Static directory set up for: ${path.join(__dirname, "uploads")}`)
 
 // Routes
 app.use("/api/users", userRoutes)
@@ -49,13 +67,14 @@ app.use((req, res) => {
 
 // Xử lý lỗi
 app.use((err, req, res, next) => {
-  console.error(err.stack)
-  res.status(500).json({ message: "Lỗi server" })
+  console.error("Server error:", err.stack)
+  res.status(500).json({ message: "Lỗi server: " + err.message })
 })
 
 // Khởi động server
 app.listen(PORT, () => {
   console.log(`Server đang chạy trên cổng ${PORT}`)
+  console.log(`Uploads directory: ${uploadsDir}`)
 })
 
 export default app

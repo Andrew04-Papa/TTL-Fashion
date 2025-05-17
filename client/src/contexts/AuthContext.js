@@ -27,6 +27,7 @@ export const AuthProvider = ({ children }) => {
       setCurrentUser(response.data.user)
     } catch (error) {
       console.error("Error fetching current user:", error)
+      // Nếu có lỗi khi lấy thông tin người dùng, đăng xuất
       logout()
     } finally {
       setLoading(false)

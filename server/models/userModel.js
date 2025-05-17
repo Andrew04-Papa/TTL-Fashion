@@ -18,9 +18,10 @@ export const createUser = async (userData) => {
   const salt = await bcrypt.genSalt(10)
   const hashedPassword = await bcrypt.hash(password, salt)
 
+  // Thêm trường role mặc định là "customer"
   const result = await query(
-    "INSERT INTO users (full_name, email, password, phone, address) VALUES ($1, $2, $3, $4, $5) RETURNING *",
-    [full_name, email, hashedPassword, phone, address],
+    "INSERT INTO users (full_name, email, password, phone, address, role) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
+    [full_name, email, hashedPassword, phone, address, "customer"],
   )
 
   // Tạo giỏ hàng cho người dùng mới
@@ -32,13 +33,29 @@ export const createUser = async (userData) => {
 }
 
 export const updateUser = async (id, userData) => {
-  const { full_name, email, phone, address } = userData
+  const { full_name, email, phone, address, avatar_url } = userData
 
+  // Kiểm tra xem có avatar_url không
+  if (avatar_url) {
+    const result = await query(
+      "UPDATE users SET full_name = $1, email = $2, phone = $3, address = $4, avatar_url = $5, updated_at = CURRENT_TIMESTAMP WHERE id = $6 RETURNING *",
+      [full_name, email, phone, address, avatar_url, id],
+    )
+    return result.rows[0]
+  } else {
+    const result = await query(
+      "UPDATE users SET full_name = $1, email = $2, phone = $3, address = $4, updated_at = CURRENT_TIMESTAMP WHERE id = $5 RETURNING *",
+      [full_name, email, phone, address, id],
+    )
+    return result.rows[0]
+  }
+}
+
+export const updateAvatarUrl = async (id, avatarUrl) => {
   const result = await query(
-    "UPDATE users SET full_name = $1, email = $2, phone = $3, address = $4, updated_at = CURRENT_TIMESTAMP WHERE id = $5 RETURNING *",
-    [full_name, email, phone, address, id],
+    "UPDATE users SET avatar_url = $1, updated_at = CURRENT_TIMESTAMP WHERE id = $2 RETURNING *",
+    [avatarUrl, id],
   )
-
   return result.rows[0]
 }
 
@@ -52,7 +69,7 @@ export const updatePassword = async (id, newPassword) => {
 }
 
 export const getAllUsers = async () => {
-  const result = await query("SELECT id, full_name, email, phone, address, created_at FROM users")
+  const result = await query("SELECT id, full_name, email, phone, address, role, avatar_url, created_at FROM users")
   return result.rows
 }
 

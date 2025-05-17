@@ -1,4 +1,3 @@
-
 -- Bảng người dùng
 CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
@@ -10,6 +9,10 @@ CREATE TABLE IF NOT EXISTS users (
     role VARCHAR(20) DEFAULT 'customer',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+-- Cập nhật bảng users để thêm trường avatar_url
+ALTER TABLE users ADD COLUMN IF NOT EXISTS avatar_url TEXT;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS role VARCHAR(20) DEFAULT 'customer';
 
 -- Bảng danh mục sản phẩm
 CREATE TABLE IF NOT EXISTS categories (

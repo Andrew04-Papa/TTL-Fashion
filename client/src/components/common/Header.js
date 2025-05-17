@@ -70,31 +70,47 @@ const Header = () => {
           </nav>
 
           <div className={`header-actions ${isMenuOpen ? "active" : ""}`}>
-            <form className="search-bar" onSubmit={handleSearch}>
+            {/* Thanh tìm kiếm mới */}
+            <div className="custom-search-container">
               <input
                 type="text"
+                className="custom-search-input"
                 placeholder="Tìm kiếm sản phẩm..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    handleSearch(e);
+                  }
+                }}
               />
-              <FaSearch className="search-icon-inside" />
-            </form>
+              <button className="custom-search-button" onClick={handleSearch}>
+                <FaSearch className="custom-search-icon" />
+              </button>
+            </div>
 
-            <div className="cart-icon cart-centered">
+            <div className="cart-icon">
               <Link to="/cart">
-                <div className="cart-icon-wrapper">
-                  <FaShoppingCart />
-                  {calculateItemCount() > 0 && <span className="cart-count">{calculateItemCount()}</span>}
-                </div>
+                <FaShoppingCart />
+                {calculateItemCount() > 0 && <span className="cart-count">{calculateItemCount()}</span>}
               </Link>
             </div>
 
             <div className="user-menu">
               {currentUser ? (
                 <div className="dropdown">
-                  <button className="dropdown-toggle">
-                    <FaUser />
-                    <span>{currentUser.full_name}</span>
+                  <button className="dropdown-toggle user-profile-button">
+                    {currentUser.avatar_url ? (
+                      <img
+                        src={currentUser.avatar_url || "/placeholder.svg"}
+                        alt={currentUser.full_name}
+                        className="user-avatar"
+                      />
+                    ) : (
+                      <FaUser className="user-icon" />
+                    )}
+                    <span className="user-name">{currentUser.full_name}</span>
                   </button>
                   <div className="dropdown-menu">
                     {isAdmin && (

@@ -1,47 +1,190 @@
-.orders-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 60px 20px;
-    background: #f9f9f9;
-    min-height: 100vh;
-    font-family: 'Segoe UI', sans-serif;
+.orders-page {
+  padding: 3rem 0;
+  background-color: #f9f9f9;
+}
+
+.page-title {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.orders-filter {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: var(--box-shadow);
+}
+
+.filter-group {
+  position: relative;
+}
+
+.filter-select,
+.filter-input {
+  padding: 0.8rem;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-size: 1rem;
+  min-width: 200px;
+}
+
+.search-group {
+  position: relative;
+}
+
+.search-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--gray-color);
+}
+
+.orders-table-container {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: var(--box-shadow);
+  overflow: hidden;
+}
+
+.orders-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.orders-table th,
+.orders-table td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.orders-table th {
+  background-color: var(--light-color);
+  font-weight: 600;
+}
+
+.price-cell {
+  font-weight: 600;
+  color: var(--secondary-color);
+}
+
+.order-status {
+  display: inline-block;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.status-pending {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.status-processing {
+  background-color: #cce5ff;
+  color: #004085;
+}
+
+.status-shipped {
+  background-color: #d1ecf1;
+  color: #0c5460;
+}
+
+.status-delivered {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.status-cancelled {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.btn-view-order {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  background-color: var(--primary-color);
+  color: white;
+  border-radius: 4px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.btn-view-order:hover {
+  background-color: var(--secondary-color);
+}
+
+.btn-view-order svg {
+  margin-right: 0.5rem;
+}
+
+.no-orders {
+  text-align: center;
+  padding: 3rem;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: var(--box-shadow);
+}
+
+.no-orders p {
+  margin-bottom: 1.5rem;
+  color: var(--gray-color);
+  font-size: 1.1rem;
+}
+
+.btn-shop {
+  display: inline-block;
+  padding: 0.8rem 1.5rem;
+  background-color: var(--secondary-color);
+  color: white;
+  border-radius: 4px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.btn-shop:hover {
+  background-color: var(--primary-color);
+}
+
+.loading,
+.error-message {
+  text-align: center;
+  padding: 3rem;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: var(--box-shadow);
+}
+
+.error-message {
+  color: var(--danger-color);
+}
+
+@media (max-width: 992px) {
+  .orders-filter {
+    flex-direction: column;
+    gap: 1rem;
   }
-  
-  .orders-box {
-    background: #fff;
-    padding: 30px;
-    border-radius: 10px;
+
+  .filter-select,
+  .filter-input {
     width: 100%;
-    max-width: 900px;
-    box-shadow: 0 0 12px rgba(0, 0, 0, 0.08);
   }
-  
-  .orders-box h2 {
-    text-align: center;
-    margin-bottom: 24px;
-    color: #333;
-  }
-  
+}
+
+@media (max-width: 768px) {
   .orders-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 15px;
+    display: block;
+    overflow-x: auto;
   }
-  
+
   .orders-table th,
   .orders-table td {
-    padding: 12px 16px;
-    border-bottom: 1px solid #ddd;
-    text-align: left;
+    white-space: nowrap;
   }
-  
-  .orders-table th {
-    background-color: #f0f0f0;
-    color: #444;
-  }
-  
-  .orders-table tr:hover {
-    background-color: #f9f9f9;
-  }
-  
+}

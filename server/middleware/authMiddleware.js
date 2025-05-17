@@ -22,7 +22,12 @@ export const authenticate = async (req, res, next) => {
     }
 
     // Lưu thông tin người dùng vào request
-    req.user = { id: user.id, email: user.email }
+    req.user = {
+      id: user.id,
+      email: user.email,
+      role: user.role || "customer",
+    }
+
     next()
   } catch (error) {
     if (error.name === "JsonWebTokenError") {
@@ -41,13 +46,12 @@ export const authenticate = async (req, res, next) => {
 export const isAdmin = async (req, res, next) => {
   try {
     // Lấy thông tin người dùng từ middleware authenticate
-    const userId = req.user.id
+    if (!req.user) {
+      return res.status(401).json({ message: "Không có thông tin xác thực" })
+    }
 
     // Kiểm tra người dùng có phải admin không
-    const user = await findUserById(userId)
-
-    // Giả sử có trường role trong bảng users
-    if (user.role !== "admin") {
+    if (req.user.role !== "admin") {
       return res.status(403).json({ message: "Không có quyền truy cập" })
     }
 

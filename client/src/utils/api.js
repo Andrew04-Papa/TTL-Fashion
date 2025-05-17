@@ -1,5 +1,6 @@
 import axios from "axios"
 
+// Sử dụng biến môi trường hoặc mặc định là localhost
 const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000/api"
 
 const api = axios.create({
@@ -32,7 +33,11 @@ api.interceptors.response.use(
     if (error.response && error.response.status === 401) {
       // Xóa token và chuyển hướng đến trang đăng nhập
       localStorage.removeItem("token")
-      window.location.href = "/login"
+
+      // Nếu không phải ở trang đăng nhập hoặc đăng ký, chuyển hướng
+      if (!window.location.pathname.includes("/login") && !window.location.pathname.includes("/register")) {
+        window.location.href = "/login"
+      }
     }
     return Promise.reject(error)
   },
