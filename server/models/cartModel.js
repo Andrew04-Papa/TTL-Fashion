@@ -77,3 +77,4 @@ export const getCartItemById = async (cartItemId) => {
 
   return result.rows[0]
 }
+
