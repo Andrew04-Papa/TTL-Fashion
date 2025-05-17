@@ -63,7 +63,14 @@ const ProductCard = ({ product }) => {
     <div className={`product-card ${isProductNew ? "new" : ""}`}>
       {isProductNew && <span className="product-badge">Mới</span>}
       <div className="product-image">
-        <img src={product.image_url || "/images/product-placeholder.jpg"} alt={product.name} />
+        <img
+          src={
+            product.image_url
+              ? `http://localhost:5000${encodeURI(product.image_url)}`
+              : "http://localhost:5000/images/product-placeholder.jpg"
+          }
+          alt={product.name}
+        />
         <div className="product-actions">
           <button className={`btn-add-cart ${isAdding ? "adding" : ""}`} onClick={handleAddToCart} disabled={isAdding}>
             <FaShoppingCart />

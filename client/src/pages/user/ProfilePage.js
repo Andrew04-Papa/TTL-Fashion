@@ -239,7 +239,7 @@ const handleProfileSubmit = async (e) => {
             <div className="profile-avatar-container">
               <div className="profile-avatar">
                 {avatarPreview ? (
-                  <img src={avatarPreview ? `${avatarPreview}?v=${Date.now()}` : ""} alt={currentUser.full_name} />
+                  <img src={avatarPreview ? encodeURI(`${avatarPreview}?v=${Date.now()}`) : ""} alt={currentUser.full_name} />
                 ) : (
                   <FaUser className="default-avatar" />
                 )}

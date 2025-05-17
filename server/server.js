@@ -48,6 +48,9 @@ if (!fs.existsSync(avatarsDir)) {
 app.use("/uploads", express.static(path.join(__dirname, "uploads")))
 console.log(`Static directory set up for: ${path.join(__dirname, "uploads")}`)
 
+app.use("/images", express.static(path.join(__dirname, "../client/public/images")))
+console.log("✅ Static IMAGES:", path.join(__dirname, "../client/public/images"))
+
 // Routes
 app.use("/api/users", userRoutes)
 app.use("/api/products", productRoutes)
