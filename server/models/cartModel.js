@@ -14,16 +14,19 @@ export const getCartByUserId = async (userId) => {
 
   // Lấy các sản phẩm trong giỏ hàng
   const itemsResult = await query(
-    `SELECT ci.id, ci.quantity, p.* 
-     FROM cart_items ci
-     JOIN products p ON ci.product_id = p.id
-     WHERE ci.cart_id = $1`,
+    `SELECT ci.id AS cart_item_id, ci.quantity, p.* 
+    FROM cart_items ci
+    JOIN products p ON ci.product_id = p.id
+    WHERE ci.cart_id = $1`,
     [cart.id],
   )
 
   return {
     ...cart,
-    items: itemsResult.rows,
+    items: itemsResult.rows.map((row) => ({
+      ...row,
+      id: row.cart_item_id,
+    })),
   }
 }
 
