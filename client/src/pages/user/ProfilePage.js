@@ -75,7 +75,6 @@ const ProfilePage = () => {
     const file = e.target.files[0]
     if (file) {
       if (file.size > 5 * 1024 * 1024) {
-        // 5MB
         toast.error("Kích thước ảnh không được vượt quá 5MB")
         return
       }
@@ -86,13 +85,6 @@ const ProfilePage = () => {
       }
 
       setAvatarFile(file)
-
-      // Tạo URL xem trước
-      const reader = new FileReader()
-      reader.onloadend = () => {
-        setAvatarPreview(reader.result)
-      }
-      reader.readAsDataURL(file)
     }
   }
 
@@ -138,57 +130,64 @@ const ProfilePage = () => {
     return Object.keys(newErrors).length === 0
   }
 
-  const handleProfileSubmit = async (e) => {
-    e.preventDefault()
+const handleProfileSubmit = async (e) => {
+  e.preventDefault()
 
-    if (!validateProfileForm()) {
-      return
-    }
-
-    setLoading(true)
-
-    try {
-      // Nếu có file ảnh đại diện mới, tải lên trước
-      let avatarUrl = currentUser.avatar_url
-
-      if (avatarFile) {
-        const formData = new FormData()
-        formData.append("avatar", avatarFile)
-
-        try {
-          console.log("Uploading avatar...")
-          const uploadResponse = await api.post("/users/upload-avatar", formData, {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          })
-          console.log("Upload response:", uploadResponse.data)
-          avatarUrl = uploadResponse.data.avatar_url
-        } catch (uploadError) {
-          console.error("Error uploading avatar:", uploadError)
-          const errorMessage = uploadError.response?.data?.message || "Không thể tải lên ảnh đại diện"
-          toast.error(errorMessage)
-          setLoading(false)
-          return
-        }
-      }
-
-      // Cập nhật thông tin hồ sơ
-      console.log("Updating profile with avatar URL:", avatarUrl)
-      const updatedProfile = await updateProfile({
-        ...profileData,
-        avatar_url: avatarUrl,
-      })
-
-      toast.success("Cập nhật hồ sơ thành công")
-    } catch (error) {
-      console.error("Error updating profile:", error)
-      const errorMessage = error.response?.data?.message || "Cập nhật hồ sơ thất bại"
-      toast.error(errorMessage)
-    } finally {
-      setLoading(false)
-    }
+  if (!validateProfileForm()) {
+    return
   }
+
+  setLoading(true)
+
+  try {
+    // Nếu có file ảnh đại diện mới, tải lên trước
+    let avatarUrl = currentUser.avatar_url
+
+    if (avatarFile) {
+      const formData = new FormData()
+      formData.append("avatar", avatarFile)
+
+      try {
+        console.log("Uploading avatar...")
+        const uploadResponse = await api.post("/users/upload-avatar", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        console.log("Upload response:", uploadResponse.data)
+        avatarUrl = uploadResponse.data.avatar_url
+        console.log("avatarUrl from API:", avatarUrl)
+
+        // ✅ Gán lại preview để hiển thị đúng ảnh mới
+        setAvatarPreview(avatarUrl)
+      } catch (uploadError) {
+        console.error("Error uploading avatar:", uploadError)
+        const errorMessage = uploadError.response?.data?.message || "Không thể tải lên ảnh đại diện"
+        toast.error(errorMessage)
+        setLoading(false)
+        return
+      }
+    }
+
+    // Cập nhật thông tin hồ sơ
+    console.log("Updating profile with avatar URL:", avatarUrl)
+    const updatedProfile = await updateProfile({
+      ...profileData,
+      avatar_url: avatarUrl,
+    })
+    
+    setAvatarFile(null)
+    setAvatarPreview(updatedProfile.avatar_url)
+    toast.success("Cập nhật hồ sơ thành công")
+  } catch (error) {
+    console.error("Error updating profile:", error)
+    const errorMessage = error.response?.data?.message || "Cập nhật hồ sơ thất bại"
+    toast.error(errorMessage)
+  } finally {
+    setLoading(false)
+  }
+}
+
 
   const handlePasswordSubmit = async (e) => {
     e.preventDefault()
@@ -240,7 +239,7 @@ const ProfilePage = () => {
             <div className="profile-avatar-container">
               <div className="profile-avatar">
                 {avatarPreview ? (
-                  <img src={avatarPreview || "/placeholder.svg"} alt={currentUser.full_name} />
+                  <img src={avatarPreview ? `${avatarPreview}?v=${Date.now()}` : ""} alt={currentUser.full_name} />
                 ) : (
                   <FaUser className="default-avatar" />
                 )}

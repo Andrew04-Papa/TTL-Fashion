@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS users (
     address TEXT,
     role VARCHAR(20) DEFAULT 'customer',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 );
 
 -- Cập nhật bảng users để thêm trường avatar_url

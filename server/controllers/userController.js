@@ -185,7 +185,7 @@ export const uploadAvatar = async (req, res) => {
     }
 
     // Tạo URL cho ảnh đại diện
-    const avatarUrl = `/uploads/avatars/${fileName}`
+    const avatarUrl = `${req.protocol}://${req.get("host")}/uploads/avatars/${fileName}`
 
     // Cập nhật URL ảnh đại diện trong cơ sở dữ liệu
     try {
